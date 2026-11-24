@@ -1,7 +1,6 @@
-// TODO: trigger updating updated_at fields
 import { pool } from "./dbConfig.js";
 
-export async function initializeTables() {
+export async function createTables() {
   const client = await pool.connect();
   console.log("Database connection established.");
 

@@ -1,6 +1,8 @@
 import express from "express";
 // import customerRoutes from "./routes/customerRoutes";
-import { initializeTables as initDB } from "./db/initializeTables.js";
+import { createTables as createDBTables } from "./db/createTables.js";
+import { createTriggers } from "./db/triggers.js";
+import { testQueries } from "./db/tests.js";
 
 const app = express();
 const port = 3000;
@@ -11,7 +13,9 @@ app.use(express.json());
 
 async function startBackend() {
   try {
-    // await initDB();
+    // await createDBTables();
+    // await createTriggers();
+    // await testQueries();
 
     app.listen(port, () =>
       console.log(`Server is running on http://localhost:${port}`),
