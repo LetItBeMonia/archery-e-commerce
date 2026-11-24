@@ -8,6 +8,8 @@
 - PostgreSQL
 ### Frontend
 ...
+### Others
+- GIT
 
 ## 📚 Libraries
 - express.js
