@@ -132,20 +132,20 @@ export async function createTables() {
           id SERIAL PRIMARY KEY,
           customer_id INT REFERENCES customers(id) NOT NULL,
           shipping_address_id INT REFERENCES addresses(id) NOT NULL,
-          total_amount numeric(10,2) NOT NULL CHECK (total_amount >= 0),
+          total_amount NUMERIC(10,2) NOT NULL CHECK (total_amount >= 0),
           status order_status NOT NULL,
           shipped_date TIMESTAMP,
           created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
           updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
     `);
-
+    // TODO: ALTER na order_items quantity CHECK > 0
     await client.query(`
       CREATE TABLE IF NOT EXISTS order_items (
           id SERIAL PRIMARY KEY,
           product_variant_id INT REFERENCES products_variants(id) NOT NULL,
           order_id INT REFERENCES orders(id) NOT NULL,
-          unit_price numeric(7,2) NOT NULL CHECK (unit_price >= 0),
+          unit_price NUMERIC(7,2) NOT NULL CHECK (unit_price >= 0),
           quantity INT NOT NULL,
           created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
@@ -159,7 +159,7 @@ export async function createTables() {
           id SERIAL PRIMARY KEY,
           order_id INT REFERENCES orders(id) NOT NULL,
           method VARCHAR(255) NOT NULL,
-          amount numeric(10,2) NOT NULL CHECK (amount >= 0),
+          amount NUMERIC(10,2) NOT NULL CHECK (amount >= 0),
           payment_status payment_status NOT NULL,
           payment_date TIMESTAMP,
           created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -167,9 +167,10 @@ export async function createTables() {
       );
     `);
   } catch (err) {
+    await client.query("ROLLBACK");
     console.error("Database initialization failed.", err.stack);
+    throw err;
   } finally {
     client.release();
-    pool.end();
   }
 }
