@@ -6,6 +6,7 @@
 - JavaScript
 - Node.js
 - PostgreSQL
+- Neon for database hosting
 ### Frontend
 ...
 ### Others
