@@ -61,7 +61,6 @@ export async function createTables() {
           id SERIAL PRIMARY KEY,
           name VARCHAR(255) NOT NULL,
           description TEXT NOT NULL,
-          images JSONB,
           brand_id INT REFERENCES brands(id) NOT NULL,
           category_id INT REFERENCES categories(id),
           created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -78,6 +77,7 @@ export async function createTables() {
           stock_quantity INT NOT NULL CHECK (stock_quantity >= 0),
           color VARCHAR(255),
           material VARCHAR(255),
+          images JSONB,
           attributes JSONB,
           default_display BOOLEAN NOT NULL DEFAULT FALSE,
           created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -139,14 +139,14 @@ export async function createTables() {
           updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
     `);
-    // TODO: ALTER na order_items quantity CHECK > 0
+    // TODO: ALTER na order_items quantity CHECK >= 0 ?
     await client.query(`
       CREATE TABLE IF NOT EXISTS order_items (
           id SERIAL PRIMARY KEY,
           product_variant_id INT REFERENCES products_variants(id) NOT NULL,
           order_id INT REFERENCES orders(id) NOT NULL,
           unit_price NUMERIC(7,2) NOT NULL CHECK (unit_price >= 0),
-          quantity INT NOT NULL,
+          quantity INT NOT NULL CHECK (quantity >= 0),
           created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
     `);
