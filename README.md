@@ -21,5 +21,6 @@
 ### Backend
 - database hosting on Neon
 - database triggers
+- REST API
 ### Frontend
 ...
